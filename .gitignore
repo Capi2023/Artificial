@@ -1,0 +1,19 @@
+# Ignorar entornos virtuales
+venv/
+env/
+# O cualquier otro nombre que le hayas dado a tu entorno virtual
+
+# Ignorar archivos de base de datos locales
+*.sqlite3
+
+# Ignorar archivos de migración generados automáticamente
+**/migrations/*.pyc
+**/migrations/__pycache__/
+
+# Ignorar archivos de cache de Python
+*.pyc
+__pycache__/
+
+# Ignorar claves secretas y variables de entorno
+.env
+
