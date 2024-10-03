@@ -26,10 +26,6 @@ def recommend_view(request):
     return render(request, 'recommend_form.html', {'recommendations': recommendations})
 
 
-SPOTIPY_CLIENT_ID = 'e23f4765e43f4fb6ac488c568175fc99'
-SPOTIPY_CLIENT_SECRET = 'c65038a897c8497c86052170ae758dec'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8000/callback/'
-
 # Función para configurar la autenticación con Spotify
 def spotify_auth():
     return SpotifyOAuth(
