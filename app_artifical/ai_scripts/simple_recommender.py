@@ -27,23 +27,40 @@ def spotify_auth():
         scope="user-library-read"
     )
 
-# Función para obtener el género de una canción usando Spotify
-def get_genre_from_spotify(track_id, token):
+# Función para obtener toda la información de una canción usando Spotify
+def get_track_info_from_spotify(track_id, token):
     sp = Spotify(auth=token)
     track_info = sp.track(track_id)
     
-    # Spotify no proporciona directamente géneros de canciones individuales, pero puedes obtener el género del artista
-    artist_id = track_info['artists'][0]['id']
-    artist_info = sp.artist(artist_id)
-    
-    if artist_info and artist_info['genres']:
-        # Devolver el primer género del artista
-        return artist_info['genres'][0]
-    return None
+    # Extraemos toda la información relevante
+    song_details = {
+        "name": track_info['name'],
+        "album": track_info['album']['name'],
+        "artists": [artist['name'] for artist in track_info['artists']],  # Lista de todos los artistas
+        "release_date": track_info['album']['release_date'],
+        "duration_ms": track_info['duration_ms'],  # Duración en milisegundos
+        "popularity": track_info['popularity'],  # Popularidad del track
+        "external_urls": track_info['external_urls']['spotify'],  # Enlace de la canción en Spotify
+    }
+
+    return song_details
 
 # Recomendador basado en géneros con integración a Spotify
 def recommend_songs(track_id, token):
-    genre = get_genre_from_spotify(track_id, token)  # Obtiene el género de Spotify
+    sp = Spotify(auth=token)  # Aquí definimos la variable 'sp'
+    
+    track_info = get_track_info_from_spotify(track_id, token)  # Obtiene la información completa de la canción
+
+    # Imprime la información de la canción
+    print(f"Información de la canción:")
+    for key, value in track_info.items():
+        print(f"{key}: {value}")
+
+    # Obtén el género del artista
+    artist_id = sp.track(track_id)['artists'][0]['id']
+    artist_info = sp.artist(artist_id)
+    
+    genre = artist_info['genres'][0] if artist_info['genres'] else "Género no disponible"
 
     print(f"Género obtenido de Spotify: {genre}")  # Imprime el género en la consola para depurar
 

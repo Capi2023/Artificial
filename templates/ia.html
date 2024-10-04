@@ -6,8 +6,20 @@
     <button type="submit">Obtener Recomendaciones</button>
 </form>
 
-<h2>Género Detectado:</h2>
-<p>{{ genre }}</p>  <!-- Aquí se muestra el género obtenido desde Spotify -->
+<h2>Información de la Canción:</h2>
+{% if track_info %}
+    <ul>
+        <li><strong>Nombre:</strong> {{ track_info.name }}</li>
+        <li><strong>Álbum:</strong> {{ track_info.album }}</li>
+        <li><strong>Artistas:</strong> {{ track_info.artists|join:", " }}</li>
+        <li><strong>Fecha de lanzamiento:</strong> {{ track_info.release_date }}</li>
+        <li><strong>Duración (ms):</strong> {{ track_info.duration_ms }}</li>
+        <li><strong>Popularidad:</strong> {{ track_info.popularity }}</li>
+        <li><strong>Spotify Link:</strong> <a href="{{ track_info.external_urls }}" target="_blank">Escuchar en Spotify</a></li>
+    </ul>
+{% else %}
+    <p>No se ha obtenido información de la canción.</p>
+{% endif %}
 
 <h2>Recomendaciones Basadas en la IA:</h2>
 <ul>

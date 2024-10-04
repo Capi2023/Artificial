@@ -3,9 +3,12 @@ from django.shortcuts import render, redirect
 from .ai_scripts.simple_recommender import recommend_songs
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
-from .ai_scripts.simple_recommender import recommend_songs, get_genre_from_spotify
+from .ai_scripts.simple_recommender import *
 import time
 from dotenv import load_dotenv
+from rest_framework import generics
+#fdrom .serializers import ProductoSerializer
+
 load_dotenv()
 
 # Usar las variables de entorno
@@ -107,14 +110,14 @@ def recommend_view_with_ia(request):
         return redirect('spotify_login')
 
     recommendations = []
-    genre = None
+    track_info = None  # Inicializamos track_info para almacenar la información de la canción
 
-    # Si el usuario envía un Track ID, obtenemos el género y usamos la IA para recomendar
+    # Si el usuario envía un Track ID, obtenemos la información completa de la canción y las recomendaciones
     if request.method == 'POST':
         track_id = request.POST.get('track_id')
-        genre = get_genre_from_spotify(track_id, token_info['access_token'])  # Obtiene el género de Spotify
+        track_info = get_track_info_from_spotify(track_id, token_info['access_token'])  # Obtiene la información de la canción
         recommendations = recommend_songs(track_id, token_info['access_token'])  # Obtiene las recomendaciones
 
-    # Pasamos tanto las recomendaciones como el género a la plantilla
-    return render(request, 'ia.html', {'recommendations': recommendations, 'genre': genre})
+    # Pasamos las recomendaciones y la información de la canción a la plantilla
+    return render(request, 'ia.html', {'recommendations': recommendations, 'track_info': track_info})
 
