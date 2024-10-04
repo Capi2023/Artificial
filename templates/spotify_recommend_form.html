@@ -6,6 +6,8 @@
     <button type="submit">Obtener Recomendaciones</button>
 </form>
 
+<a href="{% url 'index' %}" class="btn btn-primary mx-2">Index</a>
+
 <h2>Recomendaciones:</h2>
 <ul>
     {% for recommendation in recommendations %}

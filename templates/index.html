@@ -13,8 +13,14 @@
         <p class="text-center">Seleccione una de las opciones para continuar:</p>
 
         <div class="d-flex justify-content-center mt-4">
+            <!-- Botón para iniciar sesión en Spotify -->
             <a href="{% url 'spotify_login' %}" class="btn btn-primary mx-2">Iniciar sesión en Spotify</a>
-            <a href="{% url 'spotify_recommend_with_ia' %}" class="btn btn-success mx-2">Recomendaciones Basadas en la IA</a>
+
+            <!-- Botón para recomendaciones basadas en tu IA -->
+            <a href="{% url 'spotify_recommend_with_ia' %}" class="btn btn-success mx-2">Recomendaciones Basadas en nuestra IA</a>
+
+            <!-- Botón para recomendaciones basadas en la IA de Spotify -->
+            <a href="{% url 'spotify_recommend' %}" class="btn btn-success mx-2">Recomendaciones Basadas en la IA de Spotify</a>
         </div>
     </div>
 </body>
