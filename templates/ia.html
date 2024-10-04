@@ -13,6 +13,7 @@
         <li><strong>Álbum:</strong> {{ track_info.album }}</li>
         <li><strong>Artistas:</strong> {{ track_info.artists|join:", " }}</li>
         <li><strong>Fecha de lanzamiento:</strong> {{ track_info.release_date }}</li>
+        <li><strong>Géneros:</strong> {{ track_info.genres|join:", " }}</li>  <!-- Aquí formateamos los géneros -->
         <li><strong>Duración (ms):</strong> {{ track_info.duration_ms }}</li>
         <li><strong>Popularidad:</strong> {{ track_info.popularity }}</li>
         <li><strong>Spotify Link:</strong> <a href="{{ track_info.external_urls }}" target="_blank">Escuchar en Spotify</a></li>

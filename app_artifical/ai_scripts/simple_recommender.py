@@ -38,6 +38,7 @@ def get_track_info_from_spotify(track_id, token):
         "album": track_info['album']['name'],
         "artists": [artist['name'] for artist in track_info['artists']],  # Lista de todos los artistas
         "release_date": track_info['album']['release_date'],
+        "genres": sp.artist(track_info['artists'][0]['id'])['genres'],  # Géneros del artista
         "duration_ms": track_info['duration_ms'],  # Duración en milisegundos
         "popularity": track_info['popularity'],  # Popularidad del track
         "external_urls": track_info['external_urls']['spotify'],  # Enlace de la canción en Spotify
@@ -56,17 +57,20 @@ def recommend_songs(track_id, token):
     for key, value in track_info.items():
         print(f"{key}: {value}")
 
-    # Obtén el género del artista
+    # Obtén los géneros del artista
     artist_id = sp.track(track_id)['artists'][0]['id']
     artist_info = sp.artist(artist_id)
-    
-    genre = artist_info['genres'][0] if artist_info['genres'] else "Género no disponible"
 
-    print(f"Género obtenido de Spotify: {genre}")  # Imprime el género en la consola para depurar
+    genres = artist_info['genres'] if artist_info['genres'] else ["Género no disponible"]
 
-    if genre in song_database:
-        # Si el género está en la IA básica, devuelve recomendaciones predefinidas
-        return song_database[genre]
-    else:
-        # Si no se encuentra el género en la IA, no hay recomendaciones
-        return ['No recommendations available for this genre']
+    print(f"Géneros obtenidos de Spotify: {genres}")  # Imprime los géneros en la consola para depurar
+
+    # Buscar si alguno de los géneros del artista tiene una palabra clave que coincida en el diccionario 'song_database'
+    for genre in genres:
+        for key in song_database:
+            if key in genre:  # Verificamos si el género del artista contiene una palabra clave de los géneros de la base de datos
+                print(f"Se encontró coincidencia: {genre} coincide con {key}")
+                return song_database[key]  # Devolvemos las recomendaciones para esa coincidencia
+
+    # Si ninguno de los géneros coincide, no hay recomendaciones
+    return ['No recommendations available for this genre']
