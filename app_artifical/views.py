@@ -5,8 +5,11 @@ from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 import time
 from dotenv import load_dotenv
+import pandas as pd
+from .ai_scripts.nuevo import recomendar_canciones, X, df
 
 load_dotenv()
+df = pd.read_csv('static\otros\dataset.csv')
 
 # Usar las variables de entorno
 SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
@@ -82,3 +85,18 @@ def refresh_token_if_needed(request):
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
         request.session['token_info'] = token_info
     return token_info
+
+
+# Vista para obtener recomendaciones de la IA
+
+def recomendar_view(request):
+    recomendaciones = None  # Inicializar recomendaciones como None
+    if request.method == 'POST':
+        nombre_cancion = request.POST.get('nombre_cancion')
+        recomendaciones_df = recomendar_canciones(nombre_cancion, df, X)
+        
+        # Verificar si el DataFrame está vacío
+        if not recomendaciones_df.empty:
+            recomendaciones = recomendaciones_df.to_dict(orient='records')  # Convertir a lista de diccionarios
+
+    return render(request, 'recomendar.html', {'recomendaciones': recomendaciones})
