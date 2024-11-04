@@ -5,6 +5,9 @@
 </head>
 <body>
     <h1>Recomendaciones de Música</h1>
+
+    <a href="{% url 'index' %}" class="btn btn-primary mx-2">Index</a>
+
     <form method="post">
         {% csrf_token %}
         <label for="nombre_cancion">Introduce el nombre de la canción:</label>
